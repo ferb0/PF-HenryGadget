@@ -42,6 +42,8 @@ import {
   UPDATE_CAMPAIGN,
   DELETE_CAMPAIGN,
   CHANGE_CAMPAIGN_RATING,
+  PRODUCTS_DISCOUNT,
+  SET_BUTTON_ACTIVE,
   GET_LOCATIONS,
   GET_ADMIN_LOCATIONS,
   CREATE_LOCATION,
@@ -49,9 +51,13 @@ import {
   DELETE_LOCATION,
   CHANGE_LOCATION_ARCHIVE,
   CHANGE_LOCATION_VISIBLE,
+  GET_APPOINTMENTS,
+  CREATE_OR_UPDATE_APPOINTMENT,
+  DELETE_APPOINTMENT,
   GET_ADDRESSES,
   PUT_ADDRESSES,
-  DELETE_ADDRESS
+  DELETE_ADDRESS,
+  PUT_PROFILE_USER
 } from '../Constants/index.js';
 
 export default function rootReducer(state = inicialtate, action) {
@@ -181,6 +187,11 @@ export default function rootReducer(state = inicialtate, action) {
         ...state,
         refreshCart: action.payload
       };
+    case SET_BUTTON_ACTIVE:
+      return {
+        ...state,
+        buttonAddress: action.payload
+      }
     case GET_USERS:
       return {
         ...state,
@@ -319,6 +330,11 @@ export default function rootReducer(state = inicialtate, action) {
         campaigns: action.payload.result,
         lastMsg: action.payload.msg,
       };
+    case PRODUCTS_DISCOUNT:
+      return{
+        ...state,
+      productsWithDiscount:action.payload  
+      };
     case GET_LOCATIONS:
       return {
         ...state,
@@ -361,6 +377,25 @@ export default function rootReducer(state = inicialtate, action) {
         locations: action.payload.result,
         lastMsg: action.payload.msg,
       };
+    case GET_APPOINTMENTS:
+      return {
+        ...state,
+        appointments: action.payload.result,
+        currentAppointment: action.payload.user,
+        lastMsg: action.payload.msg
+      }
+    case CREATE_OR_UPDATE_APPOINTMENT:
+      return {
+        ...state,
+        currentAppointment: action.payload.result,
+        lastMsg: action.payload.msg
+      };
+    case DELETE_APPOINTMENT:
+      return {
+        ...state,
+        currentAppointment: action.payload.result,
+        lastMsg: action.payload.msg
+      }
     case GET_ADDRESSES:
       return {
         ...state,
@@ -376,8 +411,18 @@ export default function rootReducer(state = inicialtate, action) {
     case DELETE_ADDRESS:
       return {
         ...state,
-        lsatMsg:action.payload.msg,
+        lastMsg:action.payload.msg,
         addresses: state.addresses.filter(e => e.id !== action.payload.result)
+      }
+    case PUT_PROFILE_USER:
+      return{
+        ...state,
+        lastMsg: 'profile data update, was succefull',
+        user: {
+          ...state.user,
+          ...action.payload
+        }
+        
       }
     default:
       return { ...state };
